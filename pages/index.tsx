@@ -11,14 +11,14 @@ export default function Home() {
   const signMessage = async (message: string): Promise<string> => {
     if (!window.ethereum) throw new Error('No wallet found')
     
-    const accounts = await window.ethereum.request({ 
+    const accounts = await (window.ethereum as any).request({ 
       method: 'eth_requestAccounts' 
-    })
+    }) as string[]
     
-    return await window.ethereum.request({
+    return await (window.ethereum as any).request({
       method: 'personal_sign',
       params: [message, accounts[0]]
-    })
+    }) as string
   }
   
   useEffect(() => {
