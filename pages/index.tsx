@@ -180,14 +180,24 @@ export default function Home() {
                   Congratulations! Your Unique Humanity Score of {verifiedScore.score.toFixed(2)} meets our threshold. 
                   You now have access to exclusive features.
                 </p>
-                <a 
-                  href="https://t.me/+Mcp9RsRV7tVmYjZh" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="unlock-button"
-                >
-                  Join Exclusive Telegram 🚀
-                </a>
+                <div className="community-links">
+                  <a 
+                    href="https://discord.com/invite/zfGqjA5pxU" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="unlock-button secondary"
+                  >
+                    Join User Community Discord 💬
+                  </a>
+                  <a 
+                    href="https://t.me/+Mcp9RsRV7tVmYjZh" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="unlock-button"
+                  >
+                    Join Developer Telegram 🚀
+                  </a>
+                </div>
               </>
             ) : (
               // Locked state
