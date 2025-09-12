@@ -185,17 +185,9 @@ export default function Home() {
                     href="https://discord.com/invite/zfGqjA5pxU" 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="unlock-button secondary"
-                  >
-                    Join User Community Discord 💬
-                  </a>
-                  <a 
-                    href="https://t.me/+Mcp9RsRV7tVmYjZh" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
                     className="unlock-button"
                   >
-                    Join Developer Telegram 🚀
+                    Join User Community Discord 💬
                   </a>
                 </div>
               </>
