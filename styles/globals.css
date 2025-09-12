@@ -483,6 +483,67 @@ body {
   justify-content: center;
 }
 
+.score-status-card {
+  background: rgba(31, 33, 37, 0.9);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(55, 65, 81, 0.3);
+  border-radius: 16px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.score-status-card h3 {
+  color: #ffffff;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.status-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(55, 65, 81, 0.2);
+}
+
+.status-row:last-child {
+  border-bottom: none;
+}
+
+.status-label {
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.95rem;
+}
+
+.status-value {
+  font-weight: 600;
+  font-size: 0.95rem;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.status-value.passing {
+  color: #10b981;
+}
+
+.status-value.failing {
+  color: #ef4444;
+}
+
+.status-value.verified {
+  color: #10b981;
+}
+
+.status-value.pending {
+  color: #f59e0b;
+}
+
+.status-row.error .status-value {
+  color: #ef4444;
+}
+
 /* Force center the passport widget contents */
 .passport-widget-container > * {
   margin: 0 auto !important;

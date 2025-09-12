@@ -6,6 +6,13 @@ import { PassportScoreWidget, usePassportScore, DarkTheme, LightTheme } from '@h
 export default function Home() {
   const { address, isConnected } = useAccount()
   const [verifiedScore, setVerifiedScore] = useState<{ score: number; isPassing: boolean } | null>(null)
+  
+  // Use the usePassportScore hook for initial client-side check
+  const { data: passportData, isError: passportError, error } = usePassportScore({
+    apiKey: process.env.NEXT_PUBLIC_PASSPORT_API_KEY!,
+    scorerId: process.env.NEXT_PUBLIC_PASSPORT_SCORER_ID!,
+    address: address,
+  })
 
   // Signature callback for OAuth-based Stamps
   const signMessage = async (message: string): Promise<string> => {
@@ -21,9 +28,12 @@ export default function Home() {
     }) as string
   }
   
+  // Trigger server-side verification when client-side hook shows passing score
   useEffect(() => {
-    if (address && isConnected) {
-      console.log('🔍 Starting score verification for address:', address)
+    if (address && isConnected && passportData?.passingScore && !verifiedScore) {
+      console.log('🔍 Client-side shows passing score, starting server-side verification for address:', address)
+      console.log('📊 Client-side data:', { score: passportData.score, passing: passportData.passingScore })
+      
       fetch('/api/verify-score', {
         method: 'POST',
         headers: {
@@ -33,28 +43,28 @@ export default function Home() {
       })
         .then(res => res.json())
         .then(data => {
-          console.log('📊 Score verification response:', data)
+          console.log('📊 Server-side verification response:', data)
           if (data.verified) {
             const numericScore = parseFloat(data.score)
             setVerifiedScore({
               score: numericScore,
               isPassing: numericScore >= 20
             })
-            console.log('✅ Score verified:', { score: numericScore, isPassing: numericScore >= 20 })
+            console.log('✅ Server-side score verified:', { score: numericScore, isPassing: numericScore >= 20 })
           } else {
-            console.log('❌ Score verification failed:', data)
+            console.log('❌ Server-side score verification failed:', data)
             setVerifiedScore(null)
           }
         })
         .catch(err => {
-          console.error('🚨 Score verification error:', err)
+          console.error('🚨 Server-side score verification error:', err)
           setVerifiedScore(null)
         })
-    } else {
+    } else if (!address || !isConnected) {
       console.log('⏸️ No address or not connected - clearing verified score')
       setVerifiedScore(null)
     }
-  }, [address, isConnected])
+  }, [address, isConnected, passportData?.passingScore, verifiedScore])
 
   if (!isConnected) {
     return (
@@ -170,6 +180,34 @@ export default function Home() {
           </div>
           
           
+          {/* Score status indicators */}
+          {passportData && (
+            <div className="score-status-card">
+              <h3>Score Status</h3>
+              <div className="status-row">
+                <span className="status-label">Client-side Score:</span>
+                <span className={`status-value ${passportData.passingScore ? 'passing' : 'failing'}`}>
+                  {passportData.score?.toFixed(2) || 'Loading...'}
+                  {passportData.passingScore ? ' ✅' : ' ❌'}
+                </span>
+              </div>
+              {passportData.passingScore && (
+                <div className="status-row">
+                  <span className="status-label">Server-side Verification:</span>
+                  <span className={`status-value ${verifiedScore ? 'verified' : 'pending'}`}>
+                    {verifiedScore ? `${verifiedScore.score.toFixed(2)} ✅ Verified` : '⏳ Verifying...'}
+                  </span>
+                </div>
+              )}
+              {passportError && (
+                <div className="status-row error">
+                  <span className="status-label">Error:</span>
+                  <span className="status-value">{(error as Error)?.message}</span>
+                </div>
+              )}
+            </div>
+          )}
+
           {/* Access panel - always shown */}
           <div className={verifiedScore && verifiedScore.isPassing ? "unlock-section" : "locked-section"}>
             {verifiedScore && verifiedScore.isPassing ? (
@@ -192,13 +230,15 @@ export default function Home() {
                 </div>
               </>
             ) : (
-              // Locked state
+              // Locked state  
               <>
                 <h2 className="locked-title">🔒 Access Locked</h2>
                 <p className="locked-description">
-                  {verifiedScore 
-                    ? `Your current score of ${verifiedScore.score.toFixed(2)} is below our threshold. Build your score to 20 or higher to unlock exclusive access.`
-                    : "Build your Unique Humanity Score to 20 or higher to unlock access to exclusive features."
+                  {passportData?.passingScore && !verifiedScore 
+                    ? `Client-side score of ${passportData.score?.toFixed(2)} looks good! Verifying server-side...`
+                    : verifiedScore 
+                      ? `Your current score of ${verifiedScore.score.toFixed(2)} is below our threshold. Build your score to 20 or higher to unlock exclusive access.`
+                      : "Build your Unique Humanity Score to 20 or higher to unlock access to exclusive features."
                   }
                 </p>
                 <div className="locked-button">
