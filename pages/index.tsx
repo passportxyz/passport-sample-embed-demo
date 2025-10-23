@@ -109,9 +109,9 @@ export default function Home() {
         <h1 className="title">Passport Embed Demo</h1>
         <p className="subtitle">Build your Unique Humanity Score to unlock exclusive access</p>
         <div className="header-buttons">
-          <a 
-            href="https://tally.so/r/3X81KL" 
-            target="_blank" 
+          <a
+            href="https://tally.so/r/3X81KL?ref=embed-sample-app"
+            target="_blank"
             rel="noopener noreferrer"
             className="header-button primary"
           >
@@ -142,13 +142,14 @@ export default function Home() {
             <div className="step-content">
               <h3>Automatic Web3 Stamps</h3>
               <p>As soon as Embed loads with the wallet context, it will automatically verify any web3 Stamps that the user qualifies for.</p>
+              <p>Users with a strong web3 history will likely automatically be approved with just the auto Stamp check, meaning they can participate with zero friction.</p>
             </div>
           </div>
           <div className="explanation-section">
             <div className="step-number">3</div>
             <div className="step-content">
               <h3>Build Up Your Score</h3>
-              <p>If the user&apos;s score is still below the threshold, the widget will walk users through pages of different Stamps that they can verify to build up their score.</p>
+              <p>Those users that didn&apos;t immediately pass with the automatic Stamp check can verify additional Stamps directly in the component to build up their score.</p>
             </div>
           </div>
           <div className="explanation-section">
