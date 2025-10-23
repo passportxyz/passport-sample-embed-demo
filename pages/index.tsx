@@ -159,8 +159,12 @@ export default function Home() {
             </div>
           </div>
           <div className="explanation-note">
-            <h4>Security First</h4>
-            <p>Your score should be verified both client-side for display and server-side using Passport&apos;s Stamps API to prevent tampering.</p>
+            <h4>Important Considerations</h4>
+            <ul>
+              <li>Passport Embed is free for partners to use</li>
+              <li>Integration can take as little as 5 minutes, with just a few lines of code</li>
+              <li>Future updates will add &apos;minting onchain&apos; and further customizations to enable partners to brand the component, as well as update the Stamp line up.</li>
+            </ul>
           </div>
         </div>
         <div className="widget-column">
@@ -184,6 +188,10 @@ export default function Home() {
           {passportData && (
             <div className="score-status-card">
               <h3>Score Status</h3>
+              <div className="explanation-note">
+                <h4>Security First</h4>
+                <p>Your score should be verified both client-side for display and server-side using Passport&apos;s Stamps API to prevent tampering.</p>
+              </div>
               <div className="status-row">
                 <span className="status-label">Client-side Score:</span>
                 <span className={`status-value ${passportData.passingScore ? 'passing' : 'failing'}`}>
